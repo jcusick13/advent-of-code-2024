@@ -1,0 +1,1 @@
+#define PROBLEM_INPUT_DIR "@PROJECT_SOURCE_DIR@/inputs"
