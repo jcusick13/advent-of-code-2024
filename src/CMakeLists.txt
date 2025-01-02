@@ -32,4 +32,11 @@ target_include_directories(day04 PUBLIC
                            "${PROJECT_SOURCE_DIR}/src/reader")
 target_compile_options(day04 PUBLIC "${COMPILE_FLAGS}")
 
+add_executable(day05 day05.cpp)
+target_link_libraries(day05 PUBLIC reader)
+target_include_directories(day05 PUBLIC 
+                           "${PROJECT_BINARY_DIR}"
+                           "${PROJECT_SOURCE_DIR}/src/reader")
+target_compile_options(day05 PUBLIC "${COMPILE_FLAGS}")
+
 add_subdirectory(reader)
