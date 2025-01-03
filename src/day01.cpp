@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "readerConfig.h"
+#include "aocConfig.h"
 
 int partOne(std::string filename) {
   std::vector<int> left, right;

@@ -4,10 +4,10 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "reader.h"
-#include "readerConfig.h"
+#include "aoc.h"
+#include "aocConfig.h"
 
-namespace reader {
+namespace aoc {
 
 std::vector<std::string> inputsAsString(int day, InputType itype) {
 
@@ -52,4 +52,46 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype) {
 
   return inputs;
 }
-} // namespace reader
+
+Coord::Coord(int x, int y, int max_x, int max_y)
+    : x(x), y(y), max_x(max_x), max_y(max_y){};
+
+void Coord::move(Direction direction) {
+  switch (direction) {
+  case Direction::UP:
+    --y;
+    break;
+  case Direction::DOWN:
+    ++y;
+    break;
+  case Direction::LEFT:
+    --x;
+    break;
+  case Direction::RIGHT:
+    ++x;
+    break;
+  case Direction::DIAG_UR:
+    --y;
+    ++x;
+    break;
+  case Direction::DIAG_UL:
+    --y;
+    --x;
+    break;
+  case Direction::DIAG_LL:
+    ++y;
+    --x;
+    break;
+  case Direction::DIAG_LR:
+    ++y;
+    ++x;
+    break;
+  default:
+    break;
+  }
+}
+
+bool Coord::inBounds() {
+  return (x >= 0) && (x < max_x) && (y >= 0) && (y < max_y);
+}
+} // namespace aoc

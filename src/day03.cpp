@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "reader.h"
+#include "aoc.h"
 
 int partOne(std::vector<std::string> instructions) {
   std::regex pattern{"mul\\((\\d{1,3}),(\\d{1,3})\\)"};
@@ -67,8 +67,7 @@ int partTwo(std::vector<std::string> instructions) {
 }
 
 int main(int argc, char **argv) {
-  std::vector<std::string> instructions =
-      reader::inputsAsString(3, reader::FULL);
+  std::vector<std::string> instructions = aoc::inputsAsString(3, aoc::FULL);
 
   int part_one = partOne(instructions);
   std::cout << "Part one: " << part_one << std::endl;

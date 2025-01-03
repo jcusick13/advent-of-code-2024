@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "readerConfig.h"
+#include "aocConfig.h"
 
 std::vector<std::vector<int>> readRules(std::string filename) {
   std::vector<std::vector<int>> rules;

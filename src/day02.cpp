@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "readerConfig.h"
+#include "aocConfig.h"
 
 std::vector<std::vector<int>> readReports(std::string filename) {
   std::vector<std::vector<int>> reports;

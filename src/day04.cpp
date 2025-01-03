@@ -2,78 +2,10 @@
 #include <set>
 #include <vector>
 
-#include "reader.h"
+#include "aoc.h"
 
-enum Direction : int {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-  DIAG_UR,
-  DIAG_UL,
-  DIAG_LL,
-  DIAG_LR
-};
-
-const std::vector<Direction> DIRECTIONS{UP,      DOWN,    LEFT,    RIGHT,
-                                        DIAG_UR, DIAG_UL, DIAG_LL, DIAG_LR};
-
-/**
- * @brief Object for holding location within a 2d grid.
- * (0, 0) is understood to be the upper left cell (i.e.
- * moving one down from origin is (0, 1)).
- */
-class Coord {
-public:
-  Coord(int x, int y, int max_x, int max_y)
-      : x(x), y(y), max_x(max_x), max_y(max_y){};
-
-  void move(Direction direction) {
-    switch (direction) {
-    case Direction::UP:
-      --y;
-      break;
-    case Direction::DOWN:
-      ++y;
-      break;
-    case Direction::LEFT:
-      --x;
-      break;
-    case Direction::RIGHT:
-      ++x;
-      break;
-    case Direction::DIAG_UR:
-      --y;
-      ++x;
-      break;
-    case Direction::DIAG_UL:
-      --y;
-      --x;
-      break;
-    case Direction::DIAG_LL:
-      ++y;
-      --x;
-      break;
-    case Direction::DIAG_LR:
-      ++y;
-      ++x;
-      break;
-    default:
-      break;
-    }
-  }
-
-  bool inBounds() { return (x >= 0) && (x < max_x) && (y >= 0) && (y < max_y); }
-
-  int x;
-  int y;
-  // Max bounds are exclusive
-  const int max_x;
-  const int max_y;
-};
-
-bool isXmas(const reader::CharMatrix entries, Coord &coord,
-            Direction direction) {
+bool isXmas(const aoc::CharMatrix entries, aoc::Coord &coord,
+            aoc::Direction direction) {
   std::vector<char> xmas{'X', 'M', 'A', 'S'};
 
   for (char &c : xmas) {
@@ -90,12 +22,14 @@ bool isXmas(const reader::CharMatrix entries, Coord &coord,
   return true;
 }
 
-bool isXDashMas(const reader::CharMatrix entries, Coord &coord) {
+bool isXDashMas(const aoc::CharMatrix entries, aoc::Coord &coord) {
   std::set<char> expected{'M', 'S'};
 
   std::set<char> one;
-  Coord ul = Coord(coord.x - 1, coord.y - 1, coord.max_x, coord.max_y);
-  Coord lr = Coord(coord.x + 1, coord.y + 1, coord.max_x, coord.max_y);
+  aoc::Coord ul =
+      aoc::Coord(coord.x - 1, coord.y - 1, coord.max_x, coord.max_y);
+  aoc::Coord lr =
+      aoc::Coord(coord.x + 1, coord.y + 1, coord.max_x, coord.max_y);
   if ((!ul.inBounds()) || (!lr.inBounds())) {
     return false;
   }
@@ -103,8 +37,10 @@ bool isXDashMas(const reader::CharMatrix entries, Coord &coord) {
   one.emplace(entries[lr.y][lr.x]);
 
   std::set<char> two;
-  Coord ll = Coord(coord.x - 1, coord.y + 1, coord.max_x, coord.max_y);
-  Coord ur = Coord(coord.x + 1, coord.y - 1, coord.max_x, coord.max_y);
+  aoc::Coord ll =
+      aoc::Coord(coord.x - 1, coord.y + 1, coord.max_x, coord.max_y);
+  aoc::Coord ur =
+      aoc::Coord(coord.x + 1, coord.y - 1, coord.max_x, coord.max_y);
   if ((!ll.inBounds()) || !ur.inBounds()) {
     return false;
   }
@@ -114,7 +50,7 @@ bool isXDashMas(const reader::CharMatrix entries, Coord &coord) {
   return ((one == expected) && (two == expected));
 }
 
-int partOne(reader::CharMatrix entries) {
+int partOne(aoc::CharMatrix entries) {
   int max_row = entries.size();
   int max_col = entries[0].size();
 
@@ -125,8 +61,8 @@ int partOne(reader::CharMatrix entries) {
         continue;
       }
 
-      for (const Direction &direction : DIRECTIONS) {
-        Coord coord(j, i, max_col, max_row);
+      for (const aoc::Direction &direction : aoc::DIRECTIONS) {
+        aoc::Coord coord(j, i, max_col, max_row);
         if (isXmas(entries, coord, direction)) {
           ++xmas_count;
         }
@@ -137,7 +73,7 @@ int partOne(reader::CharMatrix entries) {
   return xmas_count;
 }
 
-int partTwo(reader::CharMatrix entries) {
+int partTwo(aoc::CharMatrix entries) {
   int max_row = entries.size();
   int max_col = entries[0].size();
 
@@ -148,7 +84,7 @@ int partTwo(reader::CharMatrix entries) {
         continue;
       }
 
-      Coord coord(j, i, max_col, max_row);
+      aoc::Coord coord(j, i, max_col, max_row);
       if (isXDashMas(entries, coord)) {
         ++x_mas_count;
       }
@@ -159,7 +95,7 @@ int partTwo(reader::CharMatrix entries) {
 }
 
 int main(int argc, char **argv) {
-  reader::CharMatrix entries = reader::inputsAsCharMatrix(4, reader::FULL);
+  aoc::CharMatrix entries = aoc::inputsAsCharMatrix(4, aoc::FULL);
 
   int part_one = partOne(entries);
   std::cout << "Part one: " << part_one << std::endl;
