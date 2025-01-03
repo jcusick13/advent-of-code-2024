@@ -53,8 +53,17 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype) {
   return inputs;
 }
 
+Coord::Coord(int max_x, int max_y) : max_x(max_x), max_y(max_y) {
+  x = 0;
+  y = 0;
+}
+
 Coord::Coord(int x, int y, int max_x, int max_y)
     : x(x), y(y), max_x(max_x), max_y(max_y){};
+
+bool Coord::operator==(const Coord &other) const {
+  return (x == other.x) && (y == other.y);
+}
 
 void Coord::move(Direction direction) {
   switch (direction) {
@@ -85,6 +94,41 @@ void Coord::move(Direction direction) {
   case Direction::DIAG_LR:
     ++y;
     ++x;
+    break;
+  default:
+    break;
+  }
+}
+
+void Coord::revert(Direction direction) {
+  switch (direction) {
+  case Direction::UP:
+    ++y;
+    break;
+  case Direction::DOWN:
+    --y;
+    break;
+  case Direction::LEFT:
+    ++x;
+    break;
+  case Direction::RIGHT:
+    --x;
+    break;
+  case Direction::DIAG_UR:
+    ++y;
+    --x;
+    break;
+  case Direction::DIAG_UL:
+    ++y;
+    ++x;
+    break;
+  case Direction::DIAG_LL:
+    --y;
+    ++x;
+    break;
+  case Direction::DIAG_LR:
+    --y;
+    --x;
     break;
   default:
     break;

@@ -39,4 +39,12 @@ target_include_directories(day05 PUBLIC
                            "${PROJECT_SOURCE_DIR}/src/aoc")
 target_compile_options(day05 PUBLIC "${COMPILE_FLAGS}")
 
+find_package(OpenMP REQUIRED)
+add_executable(day06 day06.cpp)
+target_link_libraries(day06 PUBLIC aoc PRIVATE OpenMP::OpenMP_CXX)
+target_include_directories(day06 PUBLIC 
+                           "${PROJECT_BINARY_DIR}"
+                           "${PROJECT_SOURCE_DIR}/src/aoc")
+target_compile_options(day06 PUBLIC "${COMPILE_FLAGS}")
+
 add_subdirectory(aoc)
