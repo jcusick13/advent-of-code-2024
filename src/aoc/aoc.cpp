@@ -1,3 +1,4 @@
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -29,6 +30,29 @@ std::vector<std::string> inputsAsString(int day, InputType itype) {
   return inputs;
 }
 
+Direction oppositeDirection(Direction direction) {
+  switch (direction) {
+  case Direction::UP:
+    return Direction::DOWN;
+  case Direction::DOWN:
+    return Direction::UP;
+  case Direction::LEFT:
+    return Direction::RIGHT;
+  case Direction::RIGHT:
+    return Direction::LEFT;
+  case Direction::DIAG_UR:
+    return Direction::DIAG_LL;
+  case Direction::DIAG_UL:
+    return Direction::DIAG_LR;
+  case Direction::DIAG_LL:
+    return Direction::DIAG_UR;
+  case Direction::DIAG_LR:
+    return Direction::DIAG_UL;
+  default:
+    throw std::runtime_error("Bad input direction");
+  }
+}
+
 CharMatrix inputsAsCharMatrix(int day, InputType itype) {
 
   std::ostringstream fname;
@@ -54,15 +78,31 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype) {
 }
 
 /**
- * 
+ *
  *  Point -----
- * 
+ *
  */
 
-Point::Point(int x, int y) : x(x), y(y) {};
+Point::Point(int x, int y) : x(x), y(y){};
 
 bool Point::operator==(const Point &other) const {
   return (x == other.x) && (y == other.y);
+}
+
+Point Point::operator+(const Point &other) const {
+  return Point(x + other.x, y + other.y);
+}
+
+Point Point::operator-(const Point &other) const {
+  return Point(x - other.x, y - other.y);
+}
+
+Point Point::operator*(int multiplier) const {
+  return Point(x * multiplier, y * multiplier);
+}
+
+int Point::distance(const Point &other) const {
+  return sqrt(pow(x - other.x, 2) + pow(y - other.y, 2));
 }
 
 void Point::move(Direction direction) {
@@ -180,9 +220,9 @@ Point Point::look(Direction direction, int distance) {
 }
 
 /**
- * 
+ *
  * BoundedPoint -----
- * 
+ *
  */
 
 BoundedPoint::BoundedPoint() : max_x(0), max_y(0) {}
@@ -194,8 +234,11 @@ bool BoundedPoint::inBounds() {
   return (x >= 0) && (x < max_x) && (y >= 0) && (y < max_y);
 }
 
-Point BoundedPoint::toPoint() {
-  return Point(x, y);
+bool BoundedPoint::inBounds(Point point) {
+  return (point.x >= 0) && (point.x < max_x) && (point.y >= 0) &&
+         (point.y < max_y);
 }
+
+Point BoundedPoint::toPoint() { return Point(x, y); }
 
 } // namespace aoc

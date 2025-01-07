@@ -26,6 +26,8 @@ const std::vector<Direction> CARDINAL_DIRS{UP, RIGHT, DOWN, LEFT};
 const std::vector<Direction> DIRECTIONS{UP,      DOWN,    LEFT,    RIGHT,
                                         DIAG_UR, DIAG_UL, DIAG_LL, DIAG_LR};
 
+Direction oppositeDirection(Direction direction);
+
 std::vector<std::string> inputsAsString(int day, InputType itype);
 
 CharMatrix inputsAsCharMatrix(int day, InputType itype);
@@ -45,6 +47,15 @@ public:
 
   bool operator==(const Point &other) const;
 
+  Point operator+(const Point &other) const;
+  Point operator-(const Point &other) const;
+  Point operator*(int multiplier) const;
+
+  /**
+   * Measure the Euclidean distance
+   */
+  int distance(const Point &other) const;
+
   /**
    * Update the object's internal location by one space
    *
@@ -55,7 +66,7 @@ public:
   /**
    * Update the objects internal location by a provided
    * set of deltas
-   * 
+   *
    * @param delta_x Amount to shift in the x-axis
    * @param delta_y Amount to shift in the y-axis
    */
@@ -72,7 +83,7 @@ public:
    * Get the x, y value for a point a given distance
    * and direction from the current. Does not alter
    * internal location of the current point.
-   * 
+   *
    * @param direction The direction to look in
    * @param distance How many steps in `direction`
    * to look at
@@ -102,6 +113,14 @@ public:
    * valid location in both `x` and `y` axes).
    */
   bool inBounds();
+
+  /**
+   * Check if an arbitrary location is within the
+   * bounds of this object.
+   *
+   * @param point Location to check for
+   */
+  bool inBounds(Point point);
 
   Point toPoint();
 };
