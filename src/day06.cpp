@@ -18,15 +18,15 @@ struct Agent {
       : coord(coord), direction(direction){};
 
   bool operator==(const Agent &other) const {
-    return (coord.x == other.coord.x) && (coord.y == other.coord.y) &&
+    return (coord.loc.x == other.coord.loc.x) && (coord.loc.y == other.coord.loc.y) &&
            (direction == other.direction);
   }
 };
 
 struct AgentHash {
   size_t operator()(const Agent &agent) const {
-    return std::hash<std::string>()(std::to_string(agent.coord.x) +
-                                    std::to_string(agent.coord.y) +
+    return std::hash<std::string>()(std::to_string(agent.coord.loc.x) +
+                                    std::to_string(agent.coord.loc.y) +
                                     std::to_string(agent.direction));
   }
 };
@@ -40,8 +40,8 @@ aoc::Coord findStartingPosition(aoc::CharMatrix patrol_map) {
   for (int i = 0; i < max_row; ++i) {
     for (int j = 0; j < max_col; ++j) {
       if (patrol_map[i][j] == '^') {
-        guard.x = j;
-        guard.y = i;
+        guard.loc.x = j;
+        guard.loc.y = i;
         starting_postion_found = true;
         break;
       }
@@ -59,7 +59,7 @@ aoc::Coord findStartingPosition(aoc::CharMatrix patrol_map) {
 
 void walkPatrolMap(
     aoc::CharMatrix patrol_map, aoc::Coord guard,
-    std::unordered_set<aoc::Coord, aoc::CoordHash> &coords_visited) {
+    std::unordered_set<aoc::Point, aoc::PointHash> &coords_visited) {
   int current_dir = 0;
   std::unordered_set<Agent, AgentHash> agent_locations;
 
@@ -69,14 +69,14 @@ void walkPatrolMap(
       throw GuardStuckInLoop();
     }
     agent_locations.insert(agent);
-    coords_visited.insert(guard);
+    coords_visited.insert(guard.loc);
 
     guard.move(aoc::CARDINAL_DIRS[current_dir % 4]);
     if (!guard.inBounds()) {
       break;
     }
 
-    if (patrol_map[guard.y][guard.x] == '#') {
+    if (patrol_map[guard.loc.y][guard.loc.x] == '#') {
       guard.revert(aoc::CARDINAL_DIRS[current_dir % 4]);
       ++current_dir;
       continue;
@@ -85,30 +85,30 @@ void walkPatrolMap(
 }
 
 int partOne(aoc::CharMatrix patrol_map) {
-  std::unordered_set<aoc::Coord, aoc::CoordHash> coords_visited;
+  std::unordered_set<aoc::Point, aoc::PointHash> points_visited;
   aoc::Coord guard = findStartingPosition(patrol_map);
 
-  walkPatrolMap(patrol_map, guard, coords_visited);
-  return coords_visited.size();
+  walkPatrolMap(patrol_map, guard, points_visited);
+  return points_visited.size();
 }
 
 int partTwo(aoc::CharMatrix patrol_map) {
-  std::unordered_set<aoc::Coord, aoc::CoordHash> coords_visited;
+  std::unordered_set<aoc::Point, aoc::PointHash> points_visited;
   int obstructions = 0;
   aoc::Coord guard = findStartingPosition(patrol_map);
 
-  walkPatrolMap(patrol_map, guard, coords_visited);
-  std::vector<aoc::Coord> v_coords_visited(coords_visited.begin(),
-                                           coords_visited.end());
+  walkPatrolMap(patrol_map, guard, points_visited);
+  std::vector<aoc::Point> v_points_visited(points_visited.begin(),
+                                           points_visited.end());
 
 #pragma omp parallel for
-  for (auto coord = v_coords_visited.begin(); coord != v_coords_visited.end();
-       ++coord) {
-    std::unordered_set<aoc::Coord, aoc::CoordHash> _coords_visited;
+  for (auto point = v_points_visited.begin(); point != v_points_visited.end();
+       ++point) {
+    std::unordered_set<aoc::Point, aoc::PointHash> _points_visited;
     aoc::CharMatrix new_patrol_map = patrol_map;
-    new_patrol_map[coord->y][coord->x] = '#';
+    new_patrol_map[point->y][point->x] = '#';
     try {
-      walkPatrolMap(new_patrol_map, guard, _coords_visited);
+      walkPatrolMap(new_patrol_map, guard, _points_visited);
     } catch (GuardStuckInLoop const &) {
       ++obstructions;
     }

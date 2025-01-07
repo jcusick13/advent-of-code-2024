@@ -30,6 +30,17 @@ std::vector<std::string> inputsAsString(int day, InputType itype);
 
 CharMatrix inputsAsCharMatrix(int day, InputType itype);
 
+class Point {
+public:
+  int x;
+  int y;
+
+  Point(){};
+  Point(int x, int y);
+
+  bool operator==(const Point &other) const;
+};
+
 /**
  * Object for holding location within a 2d grid.
  * (0, 0) is understood to be the upper left cell
@@ -37,13 +48,18 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype);
  */
 class Coord {
 public:
-  int x;
-  int y;
+  Point loc;
   const int max_x; // Exclusive
   const int max_y; // Exclusive
 
+  // Coord() : max_x(0), max_y(0) {};
   Coord(const int max_x, const int max_y);
   Coord(int x, int y, int max_x, int max_y);
+
+  // Coord(Coord &other);
+  // Coord& operator=(Coord &other);
+  // Coord(Coord &&other);
+  // Coord& operator=(Coord &&other);
 
   bool operator==(const Coord &other) const;
 
@@ -69,10 +85,10 @@ public:
   bool inBounds();
 };
 
-struct CoordHash {
-  size_t operator()(const Coord &coord) const {
-    return std::hash<std::string>()(std::to_string(coord.x) + "-" +
-                                    std::to_string(coord.y));
+struct PointHash {
+  size_t operator()(const Point &point) const {
+    return std::hash<std::string>()(std::to_string(point.x) + "-" +
+                                    std::to_string(point.y));
   }
 };
 } // namespace aoc

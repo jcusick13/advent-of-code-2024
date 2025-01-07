@@ -13,7 +13,7 @@ bool isXmas(const aoc::CharMatrix entries, aoc::Coord &coord,
       return false;
     }
 
-    if (entries[coord.y][coord.x] != c) {
+    if (entries[coord.loc.y][coord.loc.x] != c) {
       return false;
     }
     coord.move(direction);
@@ -27,25 +27,25 @@ bool isXDashMas(const aoc::CharMatrix entries, aoc::Coord &coord) {
 
   std::set<char> one;
   aoc::Coord ul =
-      aoc::Coord(coord.x - 1, coord.y - 1, coord.max_x, coord.max_y);
+      aoc::Coord(coord.loc.x - 1, coord.loc.y - 1, coord.max_x, coord.max_y);
   aoc::Coord lr =
-      aoc::Coord(coord.x + 1, coord.y + 1, coord.max_x, coord.max_y);
+      aoc::Coord(coord.loc.x + 1, coord.loc.y + 1, coord.max_x, coord.max_y);
   if ((!ul.inBounds()) || (!lr.inBounds())) {
     return false;
   }
-  one.emplace(entries[ul.y][ul.x]);
-  one.emplace(entries[lr.y][lr.x]);
+  one.emplace(entries[ul.loc.y][ul.loc.x]);
+  one.emplace(entries[lr.loc.y][lr.loc.x]);
 
   std::set<char> two;
   aoc::Coord ll =
-      aoc::Coord(coord.x - 1, coord.y + 1, coord.max_x, coord.max_y);
+      aoc::Coord(coord.loc.x - 1, coord.loc.y + 1, coord.max_x, coord.max_y);
   aoc::Coord ur =
-      aoc::Coord(coord.x + 1, coord.y - 1, coord.max_x, coord.max_y);
+      aoc::Coord(coord.loc.x + 1, coord.loc.y - 1, coord.max_x, coord.max_y);
   if ((!ll.inBounds()) || !ur.inBounds()) {
     return false;
   }
-  two.emplace(entries[ll.y][ll.x]);
-  two.emplace(entries[ur.y][ur.x]);
+  two.emplace(entries[ll.loc.y][ll.loc.x]);
+  two.emplace(entries[ur.loc.y][ur.loc.x]);
 
   return ((one == expected) && (two == expected));
 }

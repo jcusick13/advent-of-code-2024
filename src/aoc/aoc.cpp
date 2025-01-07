@@ -53,47 +53,53 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype) {
   return inputs;
 }
 
+Point::Point(int x, int y) : x(x), y(y) {};
+
+bool Point::operator==(const Point &other) const {
+  return (x == other.x) && (y == other.y);
+}
+
 Coord::Coord(int max_x, int max_y) : max_x(max_x), max_y(max_y) {
-  x = 0;
-  y = 0;
+  loc.x = 0;
+  loc.y = 0;
 }
 
 Coord::Coord(int x, int y, int max_x, int max_y)
-    : x(x), y(y), max_x(max_x), max_y(max_y){};
+    : loc(x, y), max_x(max_x), max_y(max_y){};
 
 bool Coord::operator==(const Coord &other) const {
-  return (x == other.x) && (y == other.y);
+  return (loc.x == other.loc.x) && (loc.y == other.loc.y);
 }
 
 void Coord::move(Direction direction) {
   switch (direction) {
   case Direction::UP:
-    --y;
+    --loc.y;
     break;
   case Direction::DOWN:
-    ++y;
+    ++loc.y;
     break;
   case Direction::LEFT:
-    --x;
+    --loc.x;
     break;
   case Direction::RIGHT:
-    ++x;
+    ++loc.x;
     break;
   case Direction::DIAG_UR:
-    --y;
-    ++x;
+    --loc.y;
+    ++loc.x;
     break;
   case Direction::DIAG_UL:
-    --y;
-    --x;
+    --loc.y;
+    --loc.x;
     break;
   case Direction::DIAG_LL:
-    ++y;
-    --x;
+    ++loc.y;
+    --loc.x;
     break;
   case Direction::DIAG_LR:
-    ++y;
-    ++x;
+    ++loc.y;
+    ++loc.x;
     break;
   default:
     break;
@@ -103,32 +109,32 @@ void Coord::move(Direction direction) {
 void Coord::revert(Direction direction) {
   switch (direction) {
   case Direction::UP:
-    ++y;
+    ++loc.y;
     break;
   case Direction::DOWN:
-    --y;
+    --loc.y;
     break;
   case Direction::LEFT:
-    ++x;
+    ++loc.x;
     break;
   case Direction::RIGHT:
-    --x;
+    --loc.x;
     break;
   case Direction::DIAG_UR:
-    ++y;
-    --x;
+    ++loc.y;
+    --loc.x;
     break;
   case Direction::DIAG_UL:
-    ++y;
-    ++x;
+    ++loc.y;
+    ++loc.x;
     break;
   case Direction::DIAG_LL:
-    --y;
-    ++x;
+    --loc.y;
+    ++loc.x;
     break;
   case Direction::DIAG_LR:
-    --y;
-    --x;
+    --loc.y;
+    --loc.x;
     break;
   default:
     break;
@@ -136,6 +142,6 @@ void Coord::revert(Direction direction) {
 }
 
 bool Coord::inBounds() {
-  return (x >= 0) && (x < max_x) && (y >= 0) && (y < max_y);
+  return (loc.x >= 0) && (loc.x < max_x) && (loc.y >= 0) && (loc.y < max_y);
 }
 } // namespace aoc
