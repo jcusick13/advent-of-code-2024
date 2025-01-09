@@ -4,7 +4,7 @@
 
 #include "aoc.h"
 
-bool isXmas(const aoc::CharMatrix entries, aoc::Coord &coord,
+bool isXmas(const aoc::CharMatrix entries, aoc::BoundedPoint &coord,
             aoc::Direction direction) {
   std::vector<char> xmas{'X', 'M', 'A', 'S'};
 
@@ -13,7 +13,7 @@ bool isXmas(const aoc::CharMatrix entries, aoc::Coord &coord,
       return false;
     }
 
-    if (entries[coord.loc.y][coord.loc.x] != c) {
+    if (entries[coord.y][coord.x] != c) {
       return false;
     }
     coord.move(direction);
@@ -22,30 +22,26 @@ bool isXmas(const aoc::CharMatrix entries, aoc::Coord &coord,
   return true;
 }
 
-bool isXDashMas(const aoc::CharMatrix entries, aoc::Coord &coord) {
+bool isXDashMas(const aoc::CharMatrix entries, aoc::BoundedPoint &coord) {
   std::set<char> expected{'M', 'S'};
 
   std::set<char> one;
-  aoc::Coord ul =
-      aoc::Coord(coord.loc.x - 1, coord.loc.y - 1, coord.max_x, coord.max_y);
-  aoc::Coord lr =
-      aoc::Coord(coord.loc.x + 1, coord.loc.y + 1, coord.max_x, coord.max_y);
+  aoc::BoundedPoint ul(coord.x - 1, coord.y - 1, coord.max_x, coord.max_y);
+  aoc::BoundedPoint lr(coord.x + 1, coord.y + 1, coord.max_x, coord.max_y);
   if ((!ul.inBounds()) || (!lr.inBounds())) {
     return false;
   }
-  one.emplace(entries[ul.loc.y][ul.loc.x]);
-  one.emplace(entries[lr.loc.y][lr.loc.x]);
+  one.emplace(entries[ul.y][ul.x]);
+  one.emplace(entries[lr.y][lr.x]);
 
   std::set<char> two;
-  aoc::Coord ll =
-      aoc::Coord(coord.loc.x - 1, coord.loc.y + 1, coord.max_x, coord.max_y);
-  aoc::Coord ur =
-      aoc::Coord(coord.loc.x + 1, coord.loc.y - 1, coord.max_x, coord.max_y);
+  aoc::BoundedPoint ll(coord.x - 1, coord.y + 1, coord.max_x, coord.max_y);
+  aoc::BoundedPoint ur(coord.x + 1, coord.y - 1, coord.max_x, coord.max_y);
   if ((!ll.inBounds()) || !ur.inBounds()) {
     return false;
   }
-  two.emplace(entries[ll.loc.y][ll.loc.x]);
-  two.emplace(entries[ur.loc.y][ur.loc.x]);
+  two.emplace(entries[ll.y][ll.x]);
+  two.emplace(entries[ur.y][ur.x]);
 
   return ((one == expected) && (two == expected));
 }
@@ -62,7 +58,7 @@ int partOne(aoc::CharMatrix entries) {
       }
 
       for (const aoc::Direction &direction : aoc::DIRECTIONS) {
-        aoc::Coord coord(j, i, max_col, max_row);
+        aoc::BoundedPoint coord(j, i, max_col, max_row);
         if (isXmas(entries, coord, direction)) {
           ++xmas_count;
         }
@@ -84,7 +80,7 @@ int partTwo(aoc::CharMatrix entries) {
         continue;
       }
 
-      aoc::Coord coord(j, i, max_col, max_row);
+      aoc::BoundedPoint coord(j, i, max_col, max_row);
       if (isXDashMas(entries, coord)) {
         ++x_mas_count;
       }
