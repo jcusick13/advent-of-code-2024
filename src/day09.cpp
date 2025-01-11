@@ -61,7 +61,7 @@ size_t partTwo(std::vector<int> disk_map) {
   int free_space_size;
   for (int file_id = (disk_map.size() - 1) / 2; file_id > 0; --file_id) {
     int file_size = disk_map[file_id * 2];
-    int file_start_idx;
+    int file_start_idx = 0;
 
     for (size_t i = 0; i < arr.size(); ++i) {
       if (arr[i] == file_id) {
@@ -107,7 +107,7 @@ size_t partTwo(std::vector<int> disk_map) {
 }
 
 int main(int argc, char **argv) {
-  std::vector<int> disk_map = aoc::inputsAsInt(9, aoc::FULL);
+  std::vector<int> disk_map = aoc::inputsAsIndividualInts(9, aoc::FULL);
 
   size_t part_one = partOne(disk_map);
   std::cout << "Part one: " << part_one << std::endl;

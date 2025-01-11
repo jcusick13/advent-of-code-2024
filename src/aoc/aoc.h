@@ -29,7 +29,7 @@ const std::vector<Direction> DIRECTIONS{UP,      DOWN,    LEFT,    RIGHT,
 
 Direction oppositeDirection(Direction direction);
 
-std::vector<int> inputsAsInt(int day, InputType itype);
+std::vector<int> inputsAsIndividualInts(int day, InputType itype);
 
 std::vector<std::string> inputsAsString(int day, InputType itype);
 

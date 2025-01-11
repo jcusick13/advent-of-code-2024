@@ -30,7 +30,7 @@ std::vector<std::string> inputsAsString(int day, InputType itype) {
   return inputs;
 }
 
-std::vector<int> inputsAsInt(int day, InputType itype) {
+std::vector<int> inputsAsIndividualInts(int day, InputType itype) {
 
   std::ostringstream fname;
   fname << PROBLEM_INPUT_DIR << "/day" << std::setw(2) << std::setfill('0')
