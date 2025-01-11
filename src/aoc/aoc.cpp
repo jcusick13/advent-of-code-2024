@@ -100,6 +100,33 @@ CharMatrix inputsAsCharMatrix(int day, InputType itype) {
   return inputs;
 }
 
+IntMatrix inputsAsIntMatrix(int day, InputType itype) {
+  std::ostringstream fname;
+  fname << PROBLEM_INPUT_DIR << "/day" << std::setw(2) << std::setfill('0')
+        << day << (itype == TEST ? "-test" : "") << ".txt";
+
+  std::ifstream input_file(fname.str());
+  if (!input_file) {
+    throw std::runtime_error("Can't open " + fname.str());
+  }
+
+  IntMatrix inputs;
+  std::vector<int> ints;
+  char c;
+  int value;
+  while (input_file.get(c)) {
+    if (c == '\n') {
+      inputs.push_back(ints);
+      ints.clear();
+      continue;
+    }
+    ints.push_back(c - '0');
+  }
+
+  return inputs;
+}
+
+
 /**
  *
  *  Point -----

@@ -68,4 +68,11 @@ target_include_directories(day09 PUBLIC
                            "${PROJECT_SOURCE_DIR}/src/aoc")
 target_compile_options(day09 PUBLIC "${COMPILE_FLAGS}")
 
+add_executable(day10 day10.cpp)
+target_link_libraries(day10 PUBLIC aoc)
+target_include_directories(day10 PUBLIC 
+                           "${PROJECT_BINARY_DIR}"
+                           "${PROJECT_SOURCE_DIR}/src/aoc")
+target_compile_options(day10 PUBLIC "${COMPILE_FLAGS}")
+
 add_subdirectory(aoc)

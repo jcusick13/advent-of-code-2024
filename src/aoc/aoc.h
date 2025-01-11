@@ -7,6 +7,7 @@
 namespace aoc {
 
 using CharMatrix = std::vector<std::vector<char>>;
+using IntMatrix = std::vector<std::vector<int>>;
 
 enum InputType : int { FULL, TEST };
 
@@ -33,6 +34,8 @@ std::vector<int> inputsAsInt(int day, InputType itype);
 std::vector<std::string> inputsAsString(int day, InputType itype);
 
 CharMatrix inputsAsCharMatrix(int day, InputType itype);
+
+IntMatrix inputsAsIntMatrix(int day, InputType itype);
 
 /**
  * Representation of a location within a 2d grid.
