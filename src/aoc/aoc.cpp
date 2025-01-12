@@ -30,6 +30,26 @@ std::vector<std::string> inputsAsString(int day, InputType itype) {
   return inputs;
 }
 
+std::vector<int> inputsAsInt(int day, InputType itype) {
+
+  std::ostringstream fname;
+  fname << PROBLEM_INPUT_DIR << "/day" << std::setw(2) << std::setfill('0')
+        << day << (itype == TEST ? "-test" : "") << ".txt";
+
+  std::ifstream input_file(fname.str());
+  if (!input_file) {
+    throw std::runtime_error("Can't open " + fname.str());
+  }
+
+  std::vector<int> inputs;
+  int number;
+  while (input_file >> number) {
+    inputs.push_back(number);
+  }
+
+  return inputs;
+}
+
 std::vector<int> inputsAsIndividualInts(int day, InputType itype) {
 
   std::ostringstream fname;
